@@ -1,0 +1,9 @@
+name: telegram-stickers
+version: 1.0.0
+description: >-
+  Native Telegram sticker pack indexing, vision analysis (static + animated/video via ffmpeg), and model tools for sending stickers.
+author: aleph
+provides_tools:
+  - telegram_add_stickers
+  - telegram_send_sticker
+  - telegram_list_sticker_packs
