@@ -17,11 +17,37 @@ Native Hermes Agent plugin for Telegram sticker indexing, vision analysis (stati
 - **Instant Cache Sync**:
   - Direct integration with Hermes's native `sticker_cache.json` for zero-latency (<1ms) incoming sticker recognition without repeated LLM/Vision calls.
 
-## Tools Registered
+## Usage & Agent Interaction
 
-- `telegram_add_stickers(pack_name, limit=50)`
-- `telegram_send_sticker(query, pack=None, chat_id=None)`
-- `telegram_list_sticker_packs()`
+The plugin registers native Hermes tools. You don't need any special CLI commands — just talk to your Hermes Agent naturally:
+
+### 1. Adding & Indexing Packs
+Tell the agent to add a sticker pack by name or Telegram link:
+- *"Добавь стикерпак https://t.me/addstickers/Animals"*
+- *"Заиндексируй пак Sam_Altman"*
+- *"Add sticker pack Animals with limit 30"*
+
+Under the hood, the agent automatically executes:
+```json
+telegram_add_stickers(pack_name="Animals", limit=50)
+```
+The agent downloads each sticker, analyzes it with the active vision model (extracting keyframes from video/animated stickers), transcribes visible captions/subtitles, tags emotions, and saves it to `~/.hermes/stickers/index.json` while syncing directly to `sticker_cache.json`.
+
+### 2. Sending Stickers
+The agent autonomously decides when to send a sticker, or you can ask directly:
+- *"Кинь стикер с Альтманом где он одобряет"*
+- *"Ответь стикером с Меллстроем"*
+- *"Send a funny doge sticker"*
+
+The agent invokes:
+```json
+telegram_send_sticker(query="альтман одобрение", pack="Sam_Altman")
+```
+It matches based on OCR text, character names, emotions, and emoji, then delivers the sticker natively to the current Telegram chat.
+
+### 3. Listing Packs
+Ask the agent what packs are available:
+- *"Какие стикерпаки у тебя есть?"* -> agent runs `telegram_list_sticker_packs()`.
 
 ## Installation
 
